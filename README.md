@@ -50,23 +50,6 @@ uv run pyinstaller --noconfirm --clean --onedir --windowed --name pdf2md `
 
 成果物は `dist\pdf2md\` フォルダ一式です。**フォルダごと**配布し、利用者 PC には **Java 11+**（`PATH` または `JAVA_HOME`）が必要です。
 
-## 公開前チェック（実施済みの観点）
-
-リポジトリを public にする前に、次を確認しました。
-
-| 項目 | 結果 |
-|------|------|
-| ソース内の秘密情報（API キー、パスワード等） | `src/` 内に該当なし |
-| `.gitignore` | `dist/`、`build/`、`.venv`、`pdf2md.spec`、`.cursor/` を除外 |
-| 個人パスのハードコード | なし |
-| `pyproject.toml` の作者メール | 未記載（汎用のまま） |
-
-**ご自身でも確認してほしい点**
-
-- **`git log`** の作者名・メールが公開して問題ないか（GitHub の `noreply` メール等）。
-- **配布 zip** に `dist/` やローカルパス入りの設定ファイルを混ぜていないか。
-- **商用・社内規程**で追加のライセンス表記や承認が必要か。
-
 ## ライセンス
 
 - 本リポジトリの**オリジナルコード**: [MIT License](./LICENSE)
