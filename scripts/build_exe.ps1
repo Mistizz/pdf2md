@@ -18,4 +18,4 @@ uv run pyinstaller `
     --collect-all opendataloader_pdf `
     packaging_entry.py
 
-Write-Host "出力: dist\pdf2md\pdf2md.exe（Java 11+ は別途 PATH に必要です）"
+Write-Host "出力: dist\pdf2md\pdf2md.exe（Java 11+ は PATH または JAVA_HOME で参照可能にしてください）"

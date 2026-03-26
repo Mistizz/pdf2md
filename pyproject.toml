@@ -2,6 +2,8 @@
 name = "pdf2md"
 version = "0.1.0"
 description = "Batch PDF to Markdown (opendataloader-pdf) with CustomTkinter GUI"
+readme = "README.md"
+license = { text = "MIT" }
 requires-python = ">=3.10"
 dependencies = [
     "opendataloader-pdf>=2.0",
