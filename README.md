@@ -5,15 +5,15 @@
 - 外部API等は使わない設計にしており、ローカル環境で完結します。 
 
 
-## 必要環境
+## 環境など
 
-- **Python 3.10+**
+- **Python 3.10+**（exeファイルから実行する場合は不要です）
 - **Java 11+**
-- **Windows** を主に想定（他 OS では未検証の可能性あり）
+- **Windows** を主に想定（他 OS では未検証です）
 
 ## JDK（Java 11 以上）のインストール
 
-本ツールの変換処理に **java 11 以上**が必要です。
+本ツールの変換処理に **java 11 以上**の環境が必要です。
 JDKやJREをインストールして、javaが動く環境をご準備ください。
 
 [opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf)にて、JDLをインストールするように書かれているため、下記では、JDKのインストール手順の一例をお示しします。
