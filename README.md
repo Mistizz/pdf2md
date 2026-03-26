@@ -13,12 +13,10 @@
 [uv](https://docs.astral.sh/uv/) を推奨します。
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pdf2md.git
+git clone https://github.com/Mistizz/pdf2md.git
 cd pdf2md
 uv sync
 ```
-
-（`YOUR_USERNAME` は公開後のリポジトリに合わせて読み替えてください。）
 
 ## 使い方（ソースから起動）
 
