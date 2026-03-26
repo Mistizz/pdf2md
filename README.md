@@ -1,6 +1,6 @@
 # pdf2md
 
-フォルダ内の PDF をまとめて Markdown に変換するデスクトップツールです。変換エンジンは [opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf)（ローカル実行）、GUI は [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) です。外部 API は使用しません。
+フォルダ内の PDF、または任意に選んだ複数 PDF をまとめて Markdown に変換するデスクトップツールです。変換エンジンは [opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf)（ローカル実行）、GUI は [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) です。外部 API は使用しません。
 
 ## 必要環境
 
@@ -24,7 +24,9 @@ uv sync
 uv run python -m pdf2md
 ```
 
-- **入力フォルダ**: 配下の `.pdf` を再帰的に検索します。
+- **入力**
+  - **フォルダ…**: その配下の `.pdf` を再帰的に検索します。フォルダパスを手入力しても構いません。
+  - **PDF…**: 1 件または複数（Ctrl＋クリック等）を直接選びます。
 - **出力フォルダ**: 変換結果の出力先です。
 - **出力モード**
   - PDF ごとに `.md` を出力

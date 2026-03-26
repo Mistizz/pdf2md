@@ -15,6 +15,21 @@ def discover_pdfs(root: Path) -> list[Path]:
     return sorted(out, key=lambda x: str(x).lower())
 
 
+def normalize_pdf_paths(paths: list[Path]) -> list[Path]:
+    """選択されたパスから、存在する .pdf ファイルだけを重複除去して決定順に並べる。"""
+    seen: set[Path] = set()
+    out: list[Path] = []
+    for raw in paths:
+        p = Path(raw).expanduser().resolve()
+        if not p.is_file() or p.suffix.lower() != ".pdf":
+            continue
+        if p in seen:
+            continue
+        seen.add(p)
+        out.append(p)
+    return sorted(out, key=lambda x: str(x).lower())
+
+
 def stem_collision_warnings(pdfs: list[Path]) -> list[str]:
     by_stem: dict[str, list[Path]] = defaultdict(list)
     for p in pdfs:

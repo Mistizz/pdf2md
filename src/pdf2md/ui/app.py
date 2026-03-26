@@ -29,6 +29,9 @@ class Pdf2MdApp(ctk.CTk):
         self._f_small = ui_font(11)
         self._f_btn = ui_font(13)
 
+        self._input_mode: str = "folder"
+        self._input_files: list[Path] = []
+
         self.title(f"PDF → Markdown 一括変換 v{__version__}")
         self.geometry("760x620")
         self.minsize(640, 480)
@@ -49,7 +52,7 @@ class Pdf2MdApp(ctk.CTk):
 
         ctk.CTkLabel(
             self,
-            text="入力フォルダ（配下の PDF を再帰的に処理）",
+            text="入力（フォルダを再帰検索、または PDF を直接 1 件以上選択）",
             **kw,
         ).grid(row=0, column=0, sticky="w", **pad)
         row_in = ctk.CTkFrame(self, fg_color="transparent")
@@ -58,13 +61,24 @@ class Pdf2MdApp(ctk.CTk):
         self.input_var = tk.StringVar()
         self.input_entry = ctk.CTkEntry(row_in, textvariable=self.input_var, font=self._f)
         self.input_entry.grid(row=0, column=0, sticky="ew", padx=(0, 8))
-        ctk.CTkButton(
-            row_in,
-            text="参照…",
-            width=88,
-            command=self._browse_input,
+        btn_in = ctk.CTkFrame(row_in, fg_color="transparent")
+        btn_in.grid(row=0, column=1)
+        self._btn_pdf = ctk.CTkButton(
+            btn_in,
+            text="PDF…",
+            width=72,
+            command=self._browse_pdfs,
             font=self._f_btn,
-        ).grid(row=0, column=1)
+        )
+        self._btn_pdf.pack(side="left", padx=(0, 6))
+        self._btn_folder = ctk.CTkButton(
+            btn_in,
+            text="フォルダ…",
+            width=88,
+            command=self._browse_folder,
+            font=self._f_btn,
+        )
+        self._btn_folder.pack(side="left")
 
         ctk.CTkLabel(self, text="出力フォルダ", **kw).grid(row=2, column=0, sticky="w", **pad)
         row_out = ctk.CTkFrame(self, fg_color="transparent")
@@ -138,10 +152,23 @@ class Pdf2MdApp(ctk.CTk):
         )
         foot.grid(row=10, column=0, sticky="w", padx=12, pady=(0, 10))
 
-    def _browse_input(self) -> None:
+    def _browse_folder(self) -> None:
         p = filedialog.askdirectory(title="入力フォルダを選択")
         if p:
+            self._input_mode = "folder"
+            self._input_files = []
             self.input_var.set(p)
+
+    def _browse_pdfs(self) -> None:
+        files = filedialog.askopenfilenames(
+            title="PDF を選択（Ctrl で複数選択可）",
+            filetypes=[("PDF", "*.pdf"), ("すべてのファイル", "*.*")],
+        )
+        if files:
+            self._input_mode = "files"
+            self._input_files = [Path(f) for f in files]
+            n = len(self._input_files)
+            self.input_var.set(f"PDF {n} 件を選択")
 
     def _browse_output(self) -> None:
         p = filedialog.askdirectory(title="出力フォルダを選択")
@@ -153,6 +180,8 @@ class Pdf2MdApp(ctk.CTk):
         self.run_btn.configure(state=state)
         self.input_entry.configure(state=state)
         self.output_entry.configure(state=state)
+        self._btn_folder.configure(state=state)
+        self._btn_pdf.configure(state=state)
         self._radio_separate.configure(state=state)
         self._radio_merge.configure(state=state)
         if busy:
@@ -181,11 +210,11 @@ class Pdf2MdApp(ctk.CTk):
         if self._worker and self._worker.is_alive():
             messagebox.showinfo("実行中", "すでに変換が実行されています。")
             return
-        inp = self.input_var.get().strip()
         out = self.output_var.get().strip()
-        if not inp or not out:
-            messagebox.showerror("入力エラー", "入力フォルダと出力フォルダを指定してください。")
+        if not out:
+            messagebox.showerror("入力エラー", "出力フォルダを指定してください。")
             return
+
         merge_mode = self.merge_var.get() == "merge"
         self.log_box.delete("1.0", "end")
         self._set_busy(True)
@@ -196,12 +225,32 @@ class Pdf2MdApp(ctk.CTk):
 
             ok = False
             try:
-                validate_and_run(
-                    Path(inp),
-                    Path(out),
-                    merge_mode=merge_mode,
-                    log=log,
-                )
+                if self._input_mode == "files":
+                    if not self._input_files:
+                        raise ValueError("「PDF…」でファイルを選択してください。")
+                    validate_and_run(
+                        Path(out),
+                        input_pdfs=list(self._input_files),
+                        merge_mode=merge_mode,
+                        log=log,
+                    )
+                else:
+                    inp = self.input_var.get().strip()
+                    if not inp or (
+                        inp.startswith("PDF ") and "件を選択" in inp
+                    ):
+                        raise ValueError(
+                            "「フォルダ…」でフォルダを選ぶか、フォルダパスを入力してください。"
+                        )
+                    input_path = Path(inp)
+                    if not input_path.is_dir():
+                        raise FileNotFoundError(f"入力フォルダが存在しません: {input_path}")
+                    validate_and_run(
+                        Path(out),
+                        input_dir=input_path,
+                        merge_mode=merge_mode,
+                        log=log,
+                    )
                 log("--- 正常終了 ---")
                 ok = True
             except Exception as e:
