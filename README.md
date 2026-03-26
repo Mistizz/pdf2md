@@ -1,6 +1,9 @@
-# pdf2md
+## サマリー
 
-フォルダ内の PDF、または任意に選んだ複数 PDF をまとめて Markdown に変換するデスクトップツールです。変換エンジンは [opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf)（ローカル実行）、GUI は [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) です。外部 API は使用しません。
+- フォルダ内の PDF、または任意に選んだ複数 PDF をまとめて Markdown に変換するデスクトップツールです。
+- 変換エンジンは [opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf)を使用させていただいてます。
+- 外部API等は使わない設計にしており、ローカル環境で完結します。 
+
 
 ## 必要環境
 
@@ -10,40 +13,36 @@
 
 ## JDK（Java 11 以上）のインストール
 
-本ツールの変換処理に **JDK または JRE の 11 以上**が必要です（「Java」と表記されている場合も、実体は多くの場合 **JDK** パッケージで問題ありません）。
+本ツールの変換処理に **java 11 以上**が必要です。
+JDKやJREをインストールして、javaが動く環境をご準備ください。
+
+[opendataloader-pdf](https://github.com/opendataloader-project/opendataloader-pdf)にて、JDLをインストールするように書かれているため、下記では、JDKのインストール手順の一例をお示しします。
 
 ### Windows での例
 
-1. **インストーラで入れる（おすすめ）**
-   - [Eclipse Temurin（Adoptium）](https://adoptium.net/) から **LTS（例: 17 または 21）** の Windows 用 **JDK** をダウンロードし、インストールします。
-   - または [Microsoft Build of OpenJDK](https://learn.microsoft.com/en-us/java/openjdk/download) から **11 以上**を選び、インストールします。
+1. **インストーラをダウンロードしてインストール**
+   - [Eclipse Temurin（Adoptium）](https://adoptium.net/temurin/releases?version=25&mode=filter&os=windows&arch=any) からをダウンロードし、インストールします。
+   - **11 以上**を選び、インストールします。
 2. **動作確認**（新しいコマンドプロンプトまたは PowerShell で）:
 
    ```powershell
    java -version
    ```
 
-   `11` 以上のバージョンが表示されれば OK です。
+   バージョンが表示されればOKです。
 
-うまく認識されない場合は、環境変数 **`JAVA_HOME`** に JDK のインストール先（例: `C:\Program Files\Eclipse Adoptium\jdk-17.x.x-hotspot`）を設定してみてください。詳細は各配布元のドキュメントに従ってください。
+うまく認識されない場合は、環境変数 **`JAVA_HOME`** に JDK のインストール先（例: `C:\Program Files\Eclipse Adoptium\jdk-17.x.x-hotspot`、インストール先のディレクトリは環境や設定によって変わるかもです）を設定してみてください。詳細は各配布元のドキュメントに従ってください。
 
-### パッケージマネージャの例（任意）
 
-[winget](https://learn.microsoft.com/ja-jp/windows/package-manager/winget/) が使える場合の例です（パッケージ名は環境により異なることがあります）。
-
-```powershell
-winget install EclipseAdoptium.Temurin.17.JDK
-```
-
-## リリースからのダウンロード（Windows）
+## pdf2md.exeのダウンロード
 
 ビルド済みの配布物は [GitHub Releases](https://github.com/Mistizz/pdf2md/releases) から入手できます。
 
-1. 使いたい **Release** を開き、添付されている **Windows 用 ZIP**（例: `pdf2md-0.1.0-windows.zip`）をダウンロードします。
-2. ZIP を展開します。中に **`pdf2md`** フォルダが入っています。
+1. `pdf2md-X.X.X-windows.zip`）をダウンロードします。
+2. ZIP を展開します。
 3. **`pdf2md\pdf2md.exe`** を実行します。
 
-**注意:** 利用 PC には **Java 11+** が必要です。入れ方は上記の **JDK（Java 11 以上）のインストール** を参照してください。`pdf2md` フォルダは **`_internal` などと一緒に**そのまま置いた状態で使ってください（exe だけを別フォルダへ移すと動かない場合があります）。
+**注意:** `pdf2md` フォルダは **`_internal` フォルダ**と同じディレクトリにそのまま置いた状態で使ってください（exe だけを別フォルダへ移すと動かない場合があります）。
 
 ## セットアップ
 
