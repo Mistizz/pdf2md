@@ -1,0 +1,14 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+pdf2md.spec
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Editor
+.cursor/
